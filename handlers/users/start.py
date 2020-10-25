@@ -1,9 +1,36 @@
-from aiogram import types
-from aiogram.dispatcher.filters.builtin import CommandStart
-
+from aiogram.dispatcher.filters import Command, Text
+from aiogram.types import Message, ReplyKeyboardRemove
+from keyboards.default import start
 from loader import dp
 
 
-@dp.message_handler(CommandStart())
-async def bot_start(message: types.Message):
-    await message.answer(f'Hi, {message.from_user.full_name}!')
+@dp.message_handler(Command("Start"))
+async def show_menu(message: Message):
+    await message.answer("Hello welcome to WSEi schedule bot. Please choose "
+                         "option.", reply_markup=start)
+
+
+@dp.message_handler(Text(equals=["Search Group Schedule"]))
+async def get_food(message: Message):
+    await message.answer(f"You choose {message.text}. Thanks",
+                         reply_markup=ReplyKeyboardRemove())
+
+
+@dp.message_handler(Text(equals=["Settings"]))
+async def get_food(message: Message):
+    await message.answer(f"Settings ",
+                         reply_markup=ReplyKeyboardRemove())
+
+
+@dp.message_handler(Text(equals=["Help"]))
+async def get_food(message: Message):
+    await message.answer(f"If you faced with bug or problem during using "
+                         f"this bot please contact with @pUGShOLE, "
+                         f"or try to find sollution in frequent asked questions"
+                         "\n""frequent asked questions:"
+                         "\n""1)I can not see my schedule why? "
+                         "\n""It can be caused by typo in Group name, please "
+                         "check correctness in Setting menu ( /settings )."
+                         "\n""2)Any other problem?"
+                         "\n""contact with @pUGShOLE",
+                         reply_markup=ReplyKeyboardRemove())

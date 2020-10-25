@@ -1,6 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-menu = ReplyKeyboardMarkup(
+start = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text="Search Group Schedule"),

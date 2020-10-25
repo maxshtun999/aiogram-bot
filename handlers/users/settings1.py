@@ -1,12 +1,12 @@
 from aiogram import types
-from aiogram.dispatcher.filters.builtin import CommandHelp
+from aiogram.dispatcher.filters.builtin import CommandSettings
 from loader import dp
 from utils.misc import rate_limit
 
 
-@rate_limit(5, 'help')
-@dp.message_handler(CommandHelp())
-async def bot_help(message: types.Message):
+@rate_limit(5, 'Settings')
+@dp.message_handler(CommandSettings())
+async def bot_Settings(message: types.Message):
     text = [
         f"If you faced with bug or problem during using "
         f"this bot please contact with @pUGShOLE, "
