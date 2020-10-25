@@ -1,6 +1,6 @@
 from aiogram.dispatcher.filters import Command, Text
 from aiogram.types import Message, ReplyKeyboardRemove
-from keyboards.default import start
+from keyboards.default import start, settings1
 from loader import dp
 
 
@@ -12,14 +12,14 @@ async def show_menu(message: Message):
 
 @dp.message_handler(Text(equals=["Search Group Schedule"]))
 async def get_food(message: Message):
-    await message.answer(f"You choose {message.text}. Thanks",
+    await message.answer(f"You choose111 {message.text}. Thanks",
                          reply_markup=ReplyKeyboardRemove())
 
 
 @dp.message_handler(Text(equals=["Settings"]))
 async def get_food(message: Message):
-    await message.answer(f"Settings ",
-                         reply_markup=ReplyKeyboardRemove())
+    await message.answer("Settings",
+                         reply_markup=settings1)
 
 
 @dp.message_handler(Text(equals=["Help"]))

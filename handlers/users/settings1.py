@@ -1,21 +1,22 @@
-from aiogram import types
-from aiogram.dispatcher.filters.builtin import CommandSettings
+from aiogram.dispatcher.filters import Command, Text
+from aiogram.types import Message, ReplyKeyboardRemove
+from keyboards.default import start, settings1
 from loader import dp
-from utils.misc import rate_limit
 
 
-@rate_limit(5, 'Settings')
-@dp.message_handler(CommandSettings())
-async def bot_Settings(message: types.Message):
-    text = [
-        f"If you faced with bug or problem during using "
-        f"this bot please contact with @pUGShOLE, "
-        f"or try to find sollution in frequent asked questions"
-        "\n""frequent asked questions:"
-        "\n""1)I can not see my schedule why? "
-        "\n""It can be caused by typo in Group name, please "
-        "check correctness in Setting menu ( /settings )."
-        "\n""2)Any other problem?"
-        "\n""contact with @pUGShOLE"
-    ]
-    await message.answer('\n'.join(text))
+@dp.message_handler(Command("Settings"))
+async def show_settings(message: Message):
+    await message.answer("Settings", reply_markup=settings1)
+
+
+@dp.message_handler(Text(equals=["Change Group name"]))
+async def get_food(message: Message):
+    await message.answer("Change Group name", reply_markup=ReplyKeyboardRemove())
+
+
+
+@dp.message_handler(Text(equals=["Go back to Menu"]))
+async def get_food(message: Message):
+    await message.answer("Go back to Menu", reply_markup=start)
+    #show_menu(message)
+    #eply_markup=ReplyKeyboardRemove())
