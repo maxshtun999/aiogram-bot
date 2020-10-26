@@ -10,13 +10,12 @@ async def show_settings(message: Message):
 
 
 @dp.message_handler(Text(equals=["Change Group name"]))
-async def get_food(message: Message):
-    await message.answer("Change Group name", reply_markup=ReplyKeyboardRemove())
-
+async def set_group_name(message: Message):
+    await message.answer("Change Group name",
+                         reply_markup=ReplyKeyboardRemove())
 
 
 @dp.message_handler(Text(equals=["Go back to Menu"]))
-async def get_food(message: Message):
+async def get_back(message: Message):
     await message.answer("Go back to Menu", reply_markup=start)
-    #show_menu(message)
-    #eply_markup=ReplyKeyboardRemove())
+
