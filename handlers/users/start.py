@@ -1,11 +1,39 @@
+import psycopg2
+from aiogram import types
 from aiogram.dispatcher.filters import Command, Text
 from aiogram.types import Message, ReplyKeyboardRemove
+
 from keyboards.default import start, settings1
 from loader import dp
 
 
 @dp.message_handler(Command("Start"))
-async def show_menu(message: Message):
+async def show_menu(message: types.Message):
+    try:
+        connection = psycopg2.connect(user="postgres",
+                                      password="1Z2z3z4z",
+                                      host="localhost",
+                                      port="5432",
+                                      database="Wsei")
+        connection.autocommit = True
+        userid = message.from_user.id
+        print(userid)
+        cur = connection.cursor()
+        cur.execute("""INSERT INTO public."Users" (tg_id) VALUES (%s)""",
+                    [userid])
+
+        connection.commit()
+        print(message.from_user.id, "Record inserted successfully into table")
+
+    except (Exception, psycopg2.Error) as error:
+        if (connection):
+            print("Failed to insert record into table", error)
+
+    finally:
+        # closing database connection.
+        if (connection):
+            connection.close()
+            print("PostgreSQL connection is closed")
     await message.answer("Hello welcome to WSEi schedule bot. Please choose "
                          "option.", reply_markup=start)
 

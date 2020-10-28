@@ -2,6 +2,7 @@ from aiogram.dispatcher.filters import Command, Text
 from aiogram.types import Message, ReplyKeyboardRemove
 from keyboards.default import start, settings1
 from loader import dp
+import psycopg2
 
 
 @dp.message_handler(Command("Settings"))
@@ -11,6 +12,34 @@ async def show_settings(message: Message):
 
 @dp.message_handler(Text(equals=["Change Group name"]))
 async def set_group_name(message: Message):
+    try:
+        connection = psycopg2.connect(user="postgres",
+                                      password="1Z2z3z4z",
+                                      host="localhost",
+                                      port="5432",
+                                      database="Wsei_schedule")
+
+        cursor = connection.cursor()
+
+        postgres_insert_query = """ INSERT INTO "User".users(group) VALUES (%s)"""
+        record_to_insert = (5)
+        cursor.execute(postgres_insert_query, record_to_insert)
+
+        connection.commit()
+        count = cursor.rowcount
+        print(count, "Record inserted successfully into table")
+
+    except (Exception, psycopg2.Error) as error:
+        if (connection):
+            print("Failed to insert record into table", error)
+
+    finally:
+        # closing database connection.
+        if (connection):
+            cursor.close()
+            connection.close()
+            print("PostgreSQL connection is closed")
+
     await message.answer("Change Group name",
                          reply_markup=ReplyKeyboardRemove())
 
