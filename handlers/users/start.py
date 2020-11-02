@@ -19,11 +19,18 @@ async def show_menu(message: types.Message):
         userid = message.from_user.id
         print(userid)
         cur = connection.cursor()
-        cur.execute("""INSERT INTO public."Users" (tg_id) VALUES (%s)""",
+        cur.execute("""SELECT tg_id FROM public."Users" WHERE (tg_id) = (%s) """,
                     [userid])
+        data = cur.fetchall()
+        if not data:
+            cur.execute("""INSERT INTO public."Users" (tg_id) VALUES (%s)""",
+                        [userid])
+            print(message.from_user.id, "Record inserted successfully into table")
+        else:
+            print('found')
+
 
         connection.commit()
-        print(message.from_user.id, "Record inserted successfully into table")
 
     except (Exception, psycopg2.Error) as error:
         if (connection):

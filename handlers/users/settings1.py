@@ -10,7 +10,7 @@ async def show_settings(message: Message):
     await message.answer("Settings", reply_markup=settings1)
 
 
-@dp.message_handler(Text(equals=["Change Group name"]))
+@dp.message_handler(Text(equals=["Change Group name (Send me group name and press this button)"]))
 async def set_group_name(message: Message):
     try:
         connection = psycopg2.connect(user="postgres",
@@ -18,6 +18,21 @@ async def set_group_name(message: Message):
                                       host="localhost",
                                       port="5432",
                                       database="Wsei_schedule")
+
+
+
+        cursor = connection.cursor()
+        userid = message.from_user.id
+        cur = connection.cursor()
+        cur.execute(
+            """SELECT tg_id FROM public."Users" WHERE (tg_id) = (%s) """,
+            [userid])
+        cur.execute("""INSERT INTO public."Users" (tg_id) VALUES (%s)""",
+                    [userid])
+
+        connection.commit()
+
+
 
         cursor = connection.cursor()
 
