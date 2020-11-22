@@ -29,7 +29,7 @@ async def set_group_name(message: types.Message):
         cur.execute("""DELETE FROM public."Users" WHERE tg_id = (%s)""",
                     [user_id])
         print("deleted")
-        if text == '':
+        if text == "":
             print("error empty line")
         else:
             data = [(user_id, text)]
