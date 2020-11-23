@@ -26,10 +26,20 @@ async def get_schedule(message: Message):
         if user_id == "":
             print("error empty line")
         else:
-            cur.execute("""SELECT date11, time_from, time_to, lesson, room, lecturer_name, group_name  from schedule, "Users" where group_name = group1 ORDER BY date11""")
+            cur.execute("""SELECT date11, time_from, time_to, lesson, room,
+             lecturer_name, group_name  from schedule, "Users" where tg_id = %s
+              and group_name = group1 ORDER BY date11""",[user_id])
             data = cur.fetchall()
             data1 = '\n'.join(map(str, data))
         connection.commit()
+        if not data:
+            await message.answer(
+                f"Please go to Settings (/settings) and choose group!",
+                reply_markup=ReplyKeyboardRemove())
+
+        else:
+            await message.answer(f"{data1}",
+                                 reply_markup=ReplyKeyboardRemove())
 
     except (Exception, psycopg2.Error) as error:
         if (connection):
@@ -39,15 +49,6 @@ async def get_schedule(message: Message):
         if (connection):
             connection.close()
             print("PostgreSQL connection is closed")
-    if not data:
-        await message.answer(
-            f"Please go to Settings (/settings) and choose group!",
-            reply_markup=ReplyKeyboardRemove())
-
-    else:
-        await message.answer(f"{data1}",
-                             reply_markup=ReplyKeyboardRemove())
-
 
 
 
